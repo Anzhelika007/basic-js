@@ -20,62 +20,57 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
+  constructor(flag = true) {
+    this.flag = flag;
+    this.alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+  }
   encrypt(message, key) {
-    if(!message || ! key) {
-      throw new Error('Incorrect arguments!');
-    }
+    if (message == undefined || key == undefined) throw new Error(`Incorrect arguments!`);
 
     message = message.toUpperCase();
     key = key.toUpperCase();
 
-    let countAlphabet = 26;
-    let codeSymbolA = 'A'.charCodeAt(0);
-
+    const alpha = this.alpha;
     let result = [];
-    let keyI = 0;
+    let j = 0;
 
-    message.split('').forEach((item, index) => {
-      if (item.match(/[A-Z]/)) {
-        let indexSymbol = message.charCodeAt(index) - codeSymbolA;
-        let shift = key.charCodeAt(keyI % key.length) - codeSymbolA;
-
-        result.push(String.fromCharCode(codeSymbolA + (indexSymbol + shift) % countAlphabet));
-        keyI++;
+    for (let i = 0; i < message.length; i++) {
+      if (alpha.indexOf(message[i]) == -1) {
+        result.push(message[i]);
       } else {
-        result.push(item);
+        const count = (alpha.indexOf(message[i]) + alpha.indexOf(key[j])) % 26;
+        result.push(alpha[count]);
+
+        if ((j + 1) == key.length) j = 0;
+        else j += 1;
       }
-    });
+    }
 
-    return this.reverseCode ? result.join('') : result.reverse().join('');
-
+    return (this.flag == true) ? result.join('') : result.reverse().join('');
   }
   decrypt(encryptedMessage, key) {
-    if(!encryptedMessage || ! key) {
-      throw new Error('Incorrect arguments!');
-    }
-    
+    if (encryptedMessage == undefined || key == undefined) throw new Error(`Incorrect arguments!`);
+
     encryptedMessage = encryptedMessage.toUpperCase();
     key = key.toUpperCase();
 
-    let countAlphabet = 26;
-    let codeSymbolA = 'A'.charCodeAt(0);
-
+    const alpha = this.alpha;
     let result = [];
-    let keyI = 0;
+    let j = 0;
 
-    encryptedMessage.split('').forEach((item, index) => {
-      if (item.match(/[A-Z]/)) {
-        let indexSymbol = encryptedMessage.charCodeAt(index) - codeSymbolA;
-        let shift = key.charCodeAt(keyI % key.length) - codeSymbolA;
+    for (let i = 0; i < encryptedMessage.length; i++) {
+      if (alpha.indexOf(encryptedMessage[i]) == -1) {
+        result.push(encryptedMessage[i]);
 
-        const charCode = (indexSymbol - shift + countAlphabet) % countAlphabet + codeSymbolA;
-        result.push(String.fromCharCode(charCode));
-        keyI++;
+      } else {
+        const count = (alpha.indexOf(encryptedMessage[i]) - alpha.indexOf(key[j]) + 26) % 26;
+        result.push(alpha[count]);
+
+        if ((j + 1) == key.length) j = 0;
+        else j += 1;
       }
-      else result.push(item);
-    });
-
-    return this.reverseCode ? result.join('') : result.reverse().join('');
+    }
+    return (this.flag == true) ? result.join('') : result.reverse().join('');
   }
 }
 
