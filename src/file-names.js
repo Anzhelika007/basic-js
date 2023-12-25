@@ -19,7 +19,6 @@ function renameFiles(names) {
   let answer = [];
 
     names.map(x => {
-        //console.log(answer)
         if(!answer.includes(x)){
             answer.push(x);
         } else {

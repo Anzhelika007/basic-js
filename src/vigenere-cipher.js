@@ -20,18 +20,18 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  // encrypt(message, key) {
-  //   if(!message || ! key) {
-  //     throw new Error('Incorrect arguments!');
-  //   }
+  encrypt(message, key) {
+    if(!message || ! key) {
+      throw new Error('Incorrect arguments!');
+    }
 
-  // }
-  // decrypt(encryptedMessage, key) {
-  //   if(!message || ! key) {
-  //     throw new Error('Incorrect arguments!');
-  //   }
+  }
+  decrypt(encryptedMessage, key) {
+    if(!message || ! key) {
+      throw new Error('Incorrect arguments!');
+    }
  
-  // }
+  }
 }
 
 module.exports = {

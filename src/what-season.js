@@ -15,8 +15,13 @@ function getSeason(date) {
   if (!date) {
     return 'Unable to determine the time of year!';
   }
-  
+  if (!(date instanceof Date) || Object.keys(date).length > 0)
+    throw new Error("Invalid date!");
+  const month = date.getMonth() + 1;
+  const seasonsArr = ["winter", "spring", "summer", "autumn"];
+  return seasonsArr[Math.floor((month % 12) / 3)];
 }
+
 
 module.exports = {
   getSeason
